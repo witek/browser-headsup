@@ -1,8 +1,9 @@
-(def +version+ "1.0.1")
+(def +version+ "1.0.2")
 
 (set-env!
  :resource-paths #{"src"}
- :dependencies '[[adzerk/bootlaces "0.1.13" :scope "test"]])
+ :dependencies '[[reagent "0.8.1"]
+                 [adzerk/bootlaces "0.1.13" :scope "test"]])
 
 (require '[adzerk.bootlaces :refer :all])
 
