@@ -1,24 +1,53 @@
 (ns browser-headsup.core
   (:require
-   [reagent.core :as r]))
+   [reagent.core :as r]
+   [browser-headsup.localstorage :as localstorage]))
+
+
+(def localstorage-key "witek.browser-headsup.db")
+
+
+(defn store-db!
+  [db]
+  (localstorage/set-edn!
+   localstorage-key
+   {:minimized? (:minimized? db)
+    :selected-tab (:selected-tab db)})
+  db)
 
 
 (defn on-toggle
   [db]
-  (update db :minimized? not))
+  (-> db
+      (update :minimized? not)
+      (store-db!)))
 
 
 (defn on-tab
   [db tab-id]
-  (assoc db :selected-tab tab-id))
+  (-> db
+      (assoc :selected-tab tab-id)
+      (store-db!)))
 
 
-(defonce !db (r/atom {:title "developer heads-up"
-                      :minimized? true
-                      :on-toggle #(swap! !db on-toggle)
-                      :on-tab #(swap! !db on-tab %)
-                      :tabs-order '()
-                      :tabs {}}))
+(defn load-db
+  []
+  (localstorage/get-edn localstorage-key))
+
+
+(defonce !db (r/atom (merge
+                      {:title "developer heads-up"
+                       :on-toggle #(swap! !db on-toggle)
+                       :on-tab #(swap! !db on-tab %)
+                       :tabs-order '()
+                       :tabs {}
+                       :size "50%"}
+                      (load-db))))
+
+
+(defn with-db
+  [f]
+  (swap! !db f))
 
 
 (defn conj-if-missing
@@ -29,15 +58,11 @@
 
 
 (defn def-tab
-  [id title component]
+  [{:as tab :keys [id]}]
   (-> @!db
       (update :tabs-order conj-if-missing id)
-      (assoc-in [:tabs id] {:id id
-                            :title title
-                            :component component})
+      (assoc-in [:tabs id] tab)
       (assoc :selected-tab id)
       (->> (reset! !db))))
 
 
-(def-tab "headsup-options" "Options" [:div "TODO developer heads-up options"])
-(def-tab "bindscript" "bindscript" [:div "bindscripts here"])

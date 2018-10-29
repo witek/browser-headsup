@@ -4,13 +4,18 @@
    [browser-headsup.core :as headsup]))
 
 
-(def col-2 "#F6F8F4")
-(def col-3 "#9DA3A9")
-(def col-4 "#ED9C19")
-(def col-5 "#C74D3E")
-(def col-bg "#1C222E")
+(def col-bg         "#292B2E")
+(def col-bg2        "#212026")
+(def col-error      "#ff5555")
+(def col-default    "#B0ADAB")
+(def col-default2   "#2C8554")
+(def col-highlight  "#4494D7")
+(def col-highlight2 "#BB6DBC")
+(def col-dimmed     "#93643E")
+(def spacing        "0.5em")
+(def font-size      "9pt")
+(def line-height    "10pt")
 
-(def spacing "0.5em")
 
 (defn toggler
   [db]
@@ -20,12 +25,14 @@
             :right "2em"
             :z-index 999
 
-            :font-size "8pt"
-            :line-height "80%"
+            :font-size font-size
+            :line-height line-height
             :padding spacing
 
-            :background-color col-4
-            :color col-bg
+            :background-color col-bg2
+            :color col-highlight
+            :font-family :monospace
+            :font-weight :bold
             :box-shadow "2px -1px 3px 0px rgba(0,0,0,0.3)"
             :cursor :pointer}
     :on-click (:on-toggle db)}
@@ -35,16 +42,18 @@
 (defn tab
   [db tab]
   [:div
-   {:style {:margin-right "1.5em"
+   {:key (:id tab)
+    :style {:margin-right "1.5em"
             :font-weight (if (= (:id tab) (:selected-tab db)) :bold :normal)
             :cursor :pointer}
     :on-click #((:on-tab db) (:id tab))}
-   (:title tab)])
+   (or (:title tab) "???")])
 
 
 (defn tab-content
   [db tab]
   [:div
+   {:style {:font-size font-size}}
    (:component tab)])
 
 
@@ -53,8 +62,8 @@
   [:div
    {:style {:display :flex
             :padding spacing
-            :background-color col-4
-            :color col-bg}}
+            :background-color col-bg2
+            :color col-dimmed}}
    (into [:div
           {:style {:display :flex}}
           (map #(tab db (get-in db [:tabs %])) (:tabs-order db))])])
@@ -67,13 +76,13 @@
             :bottom 0
             :z-index 998
             :width "100%"
-            :height (if (:minimized? db) "0px" "50%")
+            :height (if (:minimized? db) "0px" (:size db))
 
-            :font-size "10pt"
-            :line-height "13pt"
+            :font-size font-size
+            :line-height line-height
 
             :background-color col-bg
-            :color col-3
+            :color col-default
             :box-shadow "2px -1px 3px 0px rgba(0,0,0,0.3)"
             :transition "all 0.2s ease-in-out 0s"}}
    [:div
