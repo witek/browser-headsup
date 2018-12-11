@@ -1,9 +1,9 @@
-(def +version+ "1.0.2")
+(def +version+ "1.0.3")
 
 (set-env!
  :resource-paths #{"src"}
- :dependencies '[[witek/toolbox "1.0.1" :scope "test"]
-                 [adzerk/bootlaces "0.1.13" :scope "test"]])
+ :dependencies '[[witek/toolbox "RELEASE" :scope "test"]
+                 [adzerk/bootlaces "RELEASE" :scope "test"]])
 
 (require '[toolbox.boot.util])
 (require '[adzerk.bootlaces :refer :all])

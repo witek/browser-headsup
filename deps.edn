@@ -3,9 +3,9 @@
 
  :aliases
  {:dev {:extra-paths ["target"]
-        :extra-deps {com.bhauman/figwheel-main {:mvn/version "0.1.9"}
-                     com.bhauman/rebel-readline-cljs {:mvn/version "0.1.4"}
-                     binaryage/devtools {:mvn/version "0.9.10"}}
+        :extra-deps {com.bhauman/figwheel-main {:mvn/version "RELEASE"}
+                     com.bhauman/rebel-readline-cljs {:mvn/version "RELEASE"}
+                     binaryage/devtools {:mvn/version "RELEASE"}}
         :main-opts ["--main" "figwheel.main" "--build" "dev"]}
 
   :ancient {:main-opts ["-m" "deps-ancient.deps-ancient"]
