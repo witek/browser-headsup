@@ -1,3 +1,12 @@
-{:deps {reagent {:mvn/version "0.8.1"}
-        com.bhauman/figwheel-main {:mvn/version "0.1.9"}}
- :paths ["src" "target"]}
+{:deps {reagent {:mvn/version "0.8.1"}}
+ :paths ["src"]
+
+ :aliases
+ {:dev {:extra-paths ["target"]
+        :extra-deps {com.bhauman/figwheel-main {:mvn/version "0.1.9"}
+                     com.bhauman/rebel-readline-cljs {:mvn/version "0.1.4"}
+                     binaryage/devtools {:mvn/version "0.9.10"}}
+        :main-opts ["--main" "figwheel.main" "--build" "dev"]}
+
+  :ancient {:main-opts ["-m" "deps-ancient.deps-ancient"]
+            :extra-deps {deps-ancient {:mvn/version "RELEASE"}}}}}

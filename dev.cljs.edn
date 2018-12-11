@@ -1,1 +1,2 @@
-{:main browser-headsup.test}
+{:main            browser-headsup.demo-spa
+ :preloads        [devtools.preload]}
