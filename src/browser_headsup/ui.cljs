@@ -53,7 +53,8 @@
 (defn tab-content
   [db tab]
   [:div
-   {:style {:font-size font-size}}
+   {:style {:font-size font-size
+            :margin-bottom "3em"}}
    (:component tab)])
 
 
