@@ -1,6 +1,8 @@
 (ns ^:figwheel-hooks browser-headsup.ui
   (:require
+   [cljs.pprint :as pprint]
    [reagent.core :as r]
+
    [browser-headsup.core :as headsup]))
 
 
@@ -15,6 +17,62 @@
 (def spacing        "0.5em")
 (def font-size      "9pt")
 (def line-height    "10pt")
+
+
+(defn Data
+  [data]
+  [:code
+   {:style {:white-space :pre-wrap
+            :overflow :auto}}
+   (with-out-str (pprint/pprint data))])
+
+
+(defn Exception [exception]
+  (let [message (.-message exception)
+        message (if message message (str exception))
+        data (ex-data exception)
+        cause (or (ex-cause exception) (.-cause exception))]
+    [:div
+     (if cause
+       [:div
+        [Exception cause]
+        [:div
+         {:style {:margin-top "1em"}}
+         "upstream consequence:"]])
+     [:h3
+      {:style {:white-space :pre-wrap}}
+      (str message)]
+     (if-not (empty? data)
+       [Data data])]))
+
+
+(defn ErrorBoundary [comp]
+  (if comp
+    (let [!exception (r/atom nil)]
+      (r/create-class
+       {:component-did-catch (fn [this cause info]
+                               (.error js/console
+                                       "ErrorBoundary catched something"
+                                       "\nthis:" this
+                                       "\ne:" cause
+                                       "\ninfo:" info)
+                               (let [stack (.-componentStack info)
+                                     message (if stack
+                                               (.trim (str stack))
+                                               (str info))]
+                                 (reset! !exception (ex-info message
+                                                             {:component comp}
+                                                             cause))))
+        :reagent-render (fn [comp]
+                          (if-let [exception @!exception]
+                            [:div
+                             {:style {:background-color "#ffcccc"
+                                      :font-family :sans-serif
+                                      :margin "1rem"
+                                      :padding "1rem"}}
+                             [:div "ErrorBoundary catched something"]
+                             [Exception exception]]
+                            comp))}))))
 
 
 (defn toggler
@@ -105,12 +163,14 @@
      [content db]]))
 
 
+
+
 (def container-id "browser-headsup-container")
 
 
 (defn ^:after-load update!
   []
-  (r/render [container]
+  (r/render [ErrorBoundary [container]]
             (js/document.getElementById container-id)))
 
 
