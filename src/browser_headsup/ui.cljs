@@ -66,8 +66,10 @@
         :reagent-render (fn [comp]
                           (if-let [exception @!exception]
                             [:div
-                             {:style {:background-color "#ffcccc"
+                             {:style {:background-color col-bg
+                                      :color col-error
                                       :font-family :sans-serif
+                                      :border (str "3px solid " col-error)
                                       :margin "1rem"
                                       :padding "1rem"}}
                              [:div "ErrorBoundary catched something"]
@@ -113,7 +115,7 @@
   [:div
    {:style {:font-size font-size
             :margin-bottom "3em"}}
-   (:component tab)])
+   [ErrorBoundary (:component tab)]])
 
 
 (defn header
