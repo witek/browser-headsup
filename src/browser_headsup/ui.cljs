@@ -161,6 +161,7 @@
   [db]
   (let [db @headsup/!db]
     [:div
+     {:style {:font-family :sans-serif}}
      [toggler db]
      [content db]]))
 
