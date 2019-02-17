@@ -1,0 +1,3 @@
+{:foreign {
+           reagent {:mvn/version "0.8.1"}}
+ :own []}

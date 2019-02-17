@@ -1,4 +1,4 @@
-(ns browser-headsup.demo-spa
+(ns browser-headsup.figwheel-adapter
   (:require
    [browser-headsup.api :as headsup]))
 
