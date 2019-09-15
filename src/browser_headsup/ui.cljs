@@ -179,7 +179,6 @@
 
 (defn install!
   []
-  (.log js/console "install!")
   (if-not (.querySelector js/document (str "#" container-id))
     (let [el (.createElement js/document "div")]
       (.setAttribute el "id" container-id)
