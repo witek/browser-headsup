@@ -19,10 +19,7 @@
 
 ;; Provide a mechanism to disable the headsup.
 ;; In production this should yield false.
-;; TODO check if this works for production builds
-
-(def enabled?
-  (-> js/window .-goog .-DEBUG))
+(def enabled? goog.DEBUG)
 
 
 (defn def-tab
