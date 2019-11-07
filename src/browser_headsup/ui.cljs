@@ -31,7 +31,7 @@
   (let [message (.-message exception)
         message (if message message (str exception))
         data (ex-data exception)
-        cause (or (ex-cause exception) (.-cause exception))]
+        cause (or (ex-cause exception) (.-cause ^js exception))]
     [:div
      (if cause
        [:div
